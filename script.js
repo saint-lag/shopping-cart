@@ -1,19 +1,3 @@
-// const results = async (query, request, index) => {
-  // try {
-    // const response = await fetchItem(query);
-    // const result = await response;
-    // if (!request && !index) {
-      // return result;
-    // }
-    // if (!index) {
-      // return result[request];
-    // }
-    // return result[request][index];
-  // } catch (err) {
-    // console.log(err);
-  // }
-// };
-
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
   img.className = 'item__image';
