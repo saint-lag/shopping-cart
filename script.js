@@ -1,8 +1,18 @@
-const results = async (query) => {
-  const require = await fetchItem(query);
-  const result = require.results;
-  return result;
-};
+// const results = async (query, request, index) => {
+  // try {
+    // const response = await fetchItem(query);
+    // const result = await response;
+    // if (!request && !index) {
+      // return result;
+    // }
+    // if (!index) {
+      // return result[request];
+    // }
+    // return result[request][index];
+  // } catch (err) {
+    // console.log(err);
+  // }
+// };
 
 function createProductImageElement(imageSource) {
   const img = document.createElement('img');
@@ -32,6 +42,14 @@ function createProductItemElement({ sku, name, image }) {
   return section;
 }
 
+async function createAllProductItemElements() {
+  const request = await fetchProducts('computador');
+  const result = await request.results;
+  return result.forEach((product) => product);
+}
+
+console.log(createAllProductItemElements());
+
 function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
@@ -47,9 +65,5 @@ function createCartItemElement({ sku, name, salePrice }) {
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
-
-computerResults = results('computador');
-
-console.log(Object.keys(computerResults));
 
 window.onload = () => {};
