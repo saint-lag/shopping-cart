@@ -45,9 +45,7 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-function cartItemClickListener(event) {
-  //
-}
+function cartItemClickListener(event) {}
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
@@ -57,6 +55,45 @@ function createCartItemElement({ sku, name, salePrice }) {
   return li;
 }
 
+function loadingOn() {
+  const loadingDiv = document.createElement('div');
+  const loadingDivParent = document.querySelector('body');
+  loadingDiv.style.color = 'white';
+  loadingDiv.style.backgroundColor = 'rgb(5, 52, 219)';
+  loadingDiv.style.display = 'flex';
+  loadingDiv.style.alignItems = 'center';
+  loadingDiv.style.justifyContent = 'center';
+  loadingDiv.style.height = '100px';
+  loadingDiv.style.width = '200px';
+  loadingDiv.style.position = 'absolute';
+  loadingDiv.style.top = '50%';
+  loadingDiv.style.left = '27.9%';
+  loadingDiv.className = 'loading';
+  loadingDiv.innerText = 'carregando...';
+  loadingDivParent.appendChild(loadingDiv);
+}
+
+function loadingOff() {
+  const loadingDiv = document.querySelector('.loading');
+  const loadingDivParent = loadingDiv.parentElement;
+  loadingDivParent.removeChild(loadingDiv);
+}
+
+document.querySelectorAll('.item__add').forEach((button) =>
+  button.addEventListener('click', async () => {
+    const itemParent = button.parentElement; 
+    const itemSku = itemParent.firstElementChild.innerText;
+    const response = await fetchItem(itemSku);
+    const itemObj = await response.json();
+    const itemName = itemObj.title;
+    const itemSalePrice = itemObj.price; 
+    const cartItem = createCartItemElement({ itemSku, itemName, itemSalePrice });
+    const cartItems = document.querySelector('.cart__items');
+    cartItems.appendChild(cartItem);
+  }));
+
 window.onload = async () => {
+  loadingOn();
   await createAllProductItemElements();
+  loadingOff();
 };
