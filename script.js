@@ -45,12 +45,14 @@ function getSkuFromProductItem(item) {
   return item.querySelector('span.item__sku').innerText;
 }
 
-function cartItemClickListener(event) {}
+function cartItemClickListener(event) {
+  event.target.remove();
+}
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
-  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: $${salePrice}`;
+  li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: ${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
 }
@@ -79,21 +81,27 @@ function loadingOff() {
   loadingDivParent.removeChild(loadingDiv);
 }
 
-document.querySelectorAll('.item__add').forEach((button) =>
-  button.addEventListener('click', async () => {
-    const itemParent = button.parentElement; 
-    const itemSku = itemParent.firstElementChild.innerText;
-    const response = await fetchItem(itemSku);
-    const itemObj = await response.json();
-    const itemName = itemObj.title;
-    const itemSalePrice = itemObj.price; 
-    const cartItem = createCartItemElement({ itemSku, itemName, itemSalePrice });
-    const cartItems = document.querySelector('.cart__items');
-    cartItems.appendChild(cartItem);
-  }));
+function createCartListener() {
+  document.querySelectorAll('.item__add').forEach((button) =>
+    button.addEventListener('click', async (event) => {
+      const itemParent = event.target.parentNode;
+      const itemSku = getSkuFromProductItem(itemParent);
+      const itemObj = await fetchItem(itemSku);
+      const itemName = itemObj.title;
+      const itemSalePrice = itemObj.price;
+      const cartItem = createCartItemElement({
+        sku: itemSku,
+        name: itemName,
+        salePrice: itemSalePrice,
+      });
+      const cartItems = document.querySelector('.cart__items');
+      cartItems.appendChild(cartItem);
+    }));
+}
 
 window.onload = async () => {
   loadingOn();
   await createAllProductItemElements();
   loadingOff();
+  createCartListener();
 };
