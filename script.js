@@ -14,14 +14,18 @@ function createCustomElement(element, className, innerText) {
 
 function createProductItemElement({ sku, name, image }) {
   const section = document.createElement('section');
+  const button = createCustomElement(
+    'button',
+    'item__add',
+    'Adicionar ao carrinho!',
+  );
+  button.id = `${sku}-btn`;
   section.className = 'item';
-
+  section.id = sku;
   section.appendChild(createCustomElement('span', 'item__sku', sku));
   section.appendChild(createCustomElement('span', 'item__title', name));
   section.appendChild(createProductImageElement(image));
-  section.appendChild(
-    createCustomElement('button', 'item__add', 'Adicionar ao carrinho!'),
-  );
+  section.appendChild(button);
 
   return section;
 }
@@ -46,12 +50,19 @@ function getSkuFromProductItem(item) {
 }
 
 function cartItemClickListener(event) {
+  const itemSku = event.target.id.split('-')[0];
+  const btn = document.getElementById(itemSku).lastChild;
+  console.log(btn);
+  btn.disabled = false;
+  btn.style.backgroundColor = 'rgb(5, 52, 219)';
+  btn.innerText = 'Adicionar ao carrinho!';
   event.target.remove();
 }
 
 function createCartItemElement({ sku, name, salePrice }) {
   const li = document.createElement('li');
   li.className = 'cart__item';
+  li.id = `${sku}-cartItem`;
   li.innerText = `SKU: ${sku} | NAME: ${name} | PRICE: ${salePrice}`;
   li.addEventListener('click', cartItemClickListener);
   return li;
@@ -82,21 +93,23 @@ function loadingOff() {
 }
 
 function createCartListener() {
-  document.querySelectorAll('.item__add').forEach((button) =>
+  document.querySelectorAll('.item__add').forEach((button) => {
     button.addEventListener('click', async (event) => {
-      const itemParent = event.target.parentNode;
-      const itemSku = getSkuFromProductItem(itemParent);
+      const btn = document.getElementById(event.target.id);
+      const itemSku = getSkuFromProductItem(event.target.parentNode);
       const itemObj = await fetchItem(itemSku);
-      const itemName = itemObj.title;
-      const itemSalePrice = itemObj.price;
       const cartItem = createCartItemElement({
         sku: itemSku,
-        name: itemName,
-        salePrice: itemSalePrice,
+        name: itemObj.title,
+        salePrice: itemObj.price,
       });
       const cartItems = document.querySelector('.cart__items');
       cartItems.appendChild(cartItem);
-    }));
+      btn.disabled = true;
+      btn.style.backgroundColor = 'gray';
+      btn.innerText = 'Item adicionado!';
+    });
+  });
 }
 
 window.onload = async () => {
