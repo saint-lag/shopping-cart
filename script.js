@@ -112,9 +112,28 @@ function createCartListener() {
   });
 }
 
+function loadLocalCart(cartItems) {
+  if (cartItems === undefined) {
+    localStorage.setItem('cartItems', '[]');
+  } else {
+    // TODO: Full empty cart
+    // cartItems: ['<li class="cart__item" id="MLB2168492707-cartItem">SKU: MLB2168492707 | NAME: Notebook Multilaser Legacy Book Pc310 Preta 14.1 , Intel Celeron N3000  4gb De Ram 64gb Ssd, Intel Hd Graphics 1366x768px Windows 10 Home | PRICE: 1379</li>']
+    const cartItemOrderedList = document.querySelector('.cart__items');
+    console.log(cartItemOrderedList);
+    const cartItemElement = document.createElement('li');
+    console.log(cartItems);
+    cartItems.forEach((item) => {
+       cartItemElement.innerHTML = item;
+       cartItemOrderedList.appendChild(cartItemElement); 
+    });
+  }
+}
+
 window.onload = async () => {
   loadingOn();
+  getSavedCartItems();
   await createAllProductItemElements();
   loadingOff();
   createCartListener();
+  saveCartItems();
 };
