@@ -136,6 +136,7 @@ body {
 }
 
 .cart .cart__items {
+  line-height: 2rem;
   height: 500px;
   overflow-y: scroll;
 }

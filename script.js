@@ -52,10 +52,11 @@ function getSkuFromProductItem(item) {
 function cartItemClickListener(event) {
   const itemSku = event.target.id.split('-')[0];
   const btn = document.getElementById(itemSku).lastChild;
-  console.log(btn);
-  btn.disabled = false;
-  btn.style.backgroundColor = 'rgb(5, 52, 219)';
-  btn.innerText = 'Adicionar ao carrinho!';
+  const cartItemId = event.target.id;
+  const cartItemsObj = JSON.parse(localStorage.getItem('cartItems'));
+  delete cartItemsObj[cartItemId];
+  localStorage.setItem('cartItems', JSON.stringify(cartItemsObj));
+  enableBtn(btn);
   event.target.remove();
 }
 
@@ -95,7 +96,6 @@ function loadingOff() {
 function createCartListener() {
   document.querySelectorAll('.item__add').forEach((button) => {
     button.addEventListener('click', async (event) => {
-      const btn = document.getElementById(event.target.id);
       const itemSku = getSkuFromProductItem(event.target.parentNode);
       const itemObj = await fetchItem(itemSku);
       const cartItem = createCartItemElement({
@@ -106,17 +106,28 @@ function createCartListener() {
       const cartItems = document.querySelector('.cart__items');
       cartItems.appendChild(cartItem);
       saveCartItems();
-      btn.disabled = true;
-      btn.style.backgroundColor = 'gray';
-      btn.innerText = 'Item adicionado!';
+      disableBtn(event.target);
     });
   });
 }
 
 window.onload = async () => {
   loadingOn();
-  getSavedCartItems();
   await createAllProductItemElements();
   loadingOff();
+  getSavedCartItems();
   createCartListener();
+  const cartItemsObj = JSON.parse(localStorage.getItem('cartItems'));
+  document.querySelector('.empty-cart').addEventListener('click', () => {
+    Array.from(document.querySelector('.cart__items').children).forEach(
+      (item) => {
+        delete cartItemsObj[item.id];
+        // console.log(item.id.split('-')[0]);
+        const itemId = item.id.split('-')[0];
+        // enableBtn(undefined, itemId);
+        item.parentElement.removeChild(item);
+      },
+      );
+      localStorage.setItem('cartItems', JSON.stringify(cartItemsObj));
+  });
 };
