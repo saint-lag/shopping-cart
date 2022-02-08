@@ -1,7 +1,5 @@
-// TODO: Import real Function from script.js
-function cartItemClickListener() {
-  return true;
-}
+// const { cartItemClickListener } = require('../script');
+// const { fetchItem } = require('./fetchItem');
 
 const disableBtn = (btn, id) => {
   if (!id) {
@@ -32,12 +30,12 @@ const enableBtn = (btn, id) => {
   }
 };
 
-const getSavedCartItems = () => {
+const getSavedCartItems = async () => {
   if (localStorage.getItem('cartItems')) {
     const cartItems = JSON.parse(localStorage.getItem('cartItems'));
     if (Object.entries(cartItems).length > 0) {
       const cartItemOrderedList = document.querySelector('.cart__items');
-      Object.entries(cartItems).forEach((entry) => {
+      Object.entries(cartItems).forEach(async (entry) => {
         const cartItemElement = document.createElement('li');
         const [id, text] = entry;
         cartItemElement.className = 'cart__item';
@@ -45,7 +43,6 @@ const getSavedCartItems = () => {
         cartItemElement.innerText = text;
         cartItemElement.addEventListener('click', cartItemClickListener);
         cartItemOrderedList.appendChild(cartItemElement);
-        disableBtn(document.querySelector(`#${id.split('-')[0]}`).lastChild);
       });
     }
   } else {
