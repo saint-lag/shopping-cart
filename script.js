@@ -118,13 +118,13 @@ window.onload = async () => {
   getSavedCartItems();
   createCartListener();
   const cartItemsObj = JSON.parse(localStorage.getItem('cartItems'));
+  // Empty Cart:
   document.querySelector('.empty-cart').addEventListener('click', () => {
     Array.from(document.querySelector('.cart__items').children).forEach(
       (item) => {
         delete cartItemsObj[item.id];
-        // console.log(item.id.split('-')[0]);
-        const itemId = item.id.split('-')[0];
-        // enableBtn(undefined, itemId);
+        const btnId = document.querySelector(`#${item.id.split('-')[0]}`).lastChild.id;
+        enableBtn(undefined, btnId);
         item.parentElement.removeChild(item);
       },
       );

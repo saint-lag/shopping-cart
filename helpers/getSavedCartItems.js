@@ -1,3 +1,8 @@
+// TODO: Import real Function from script.js
+function cartItemClickListener() {
+  return true;
+}
+
 const disableBtn = (btn, id) => {
   if (!id) {
     const btnId = document.querySelector(`#${btn.id}`);
@@ -20,6 +25,7 @@ const enableBtn = (btn, id) => {
     btnId.innerText = 'Adicionar ao carrinho!';
   } else {
     const btnId = document.querySelector(`#${id}`);
+    console.log(btnId);
     btnId.disabled = false;
     btnId.style.backgroundColor = 'rgb(5, 52, 219)';
     btnId.innerText = 'Adicionar ao carrinho!';
