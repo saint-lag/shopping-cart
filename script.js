@@ -150,9 +150,9 @@ function emptyCart() {
   Array.from(document.querySelector('.cart__items').children).forEach(
     (item) => {
       delete cartItemsObj[item.id];
-      const btnId = document.querySelector(`#${item.id.split('-')[0]}`)
-        .lastChild.id;
-      enableBtn(undefined, btnId);
+      const btn = document.querySelector(`#${item.id.split('-')[0]}`)
+        .lastChild;
+      enableBtn(btn);
       item.parentElement.removeChild(item);
     },
   );

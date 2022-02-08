@@ -4,17 +4,10 @@ function cartItemClickListener() {
 }
 
 const disableBtn = (btn, id) => {
-  if (!id) {
-    const btnId = document.querySelector(`#${btn.id}`);
-    btnId.disabled = true;
-    btnId.style.backgroundColor = 'gray';
-    btnId.innerText = 'Item adicionado!';
-  } else {
-    const btnId = document.querySelector(`#${id}`);
-    btnId.disabled = true;
-    btnId.style.backgroundColor = 'gray';
-    btnId.innerText = 'Item adicionado!';
-  }
+  const btnId = document.querySelector(`#${btn.id}`);
+  btnId.disabled = true;
+  btnId.style.backgroundColor = 'gray';
+  btnId.innerText = 'Item adicionado!';
 };
 
 const enableBtn = (btn, id) => {
