@@ -1,5 +1,7 @@
-// const { cartItemClickListener } = require('../script');
-// const { fetchItem } = require('./fetchItem');
+// TODO: Import real function from script.js
+function cartItemClickListener() {
+  return true;
+}
 
 const disableBtn = (btn, id) => {
   if (!id) {

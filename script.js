@@ -56,8 +56,8 @@ function getSkuFromProductItem(item) {
 function loadingOn() {
   const loadingDiv = document.createElement('div');
   const loadingDivParent = document.querySelector('body');
-  loadingDiv.style.color = 'white';
-  loadingDiv.style.backgroundColor = 'rgb(5, 52, 219)';
+  loadingDiv.style.fontSize = '1.75rem';
+  loadingDiv.style.color = 'gray';
   loadingDiv.style.display = 'flex';
   loadingDiv.style.alignItems = 'center';
   loadingDiv.style.justifyContent = 'center';
