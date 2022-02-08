@@ -40,12 +40,12 @@ const getSavedCartItems = () => {
       Object.entries(cartItems).forEach((entry) => {
         const cartItemElement = document.createElement('li');
         const [id, text] = entry;
-        const itemId = document.querySelector(`#${id.split('-')[0]}`);
+        cartItemElement.className = 'cart__item';
         cartItemElement.id = id;
         cartItemElement.innerText = text;
         cartItemElement.addEventListener('click', cartItemClickListener);
         cartItemOrderedList.appendChild(cartItemElement);
-        disableBtn(itemId.lastChild);
+        disableBtn(document.querySelector(`#${id.split('-')[0]}`).lastChild);
       });
     }
   } else {
